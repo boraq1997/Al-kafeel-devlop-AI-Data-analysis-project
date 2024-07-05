@@ -25,11 +25,20 @@ root.tk.call("source", f"forest-{theme}.tcl")
 style.theme_use(f"forest-{theme}")
 
 frame = imf.ttk.Frame(root)
+
 frame.pack()
 
-uploadFrame = imf.ttk.LabelFrame(frame, text="upload frame")
-uploadFrame.grid(row=0, column=0)
+uploadFrame = imf.ttk.LabelFrame(frame, text="upload frame", padding=(20, 10))
+uploadFrame.grid(row=0, column=0, padx=(20, 10), pady=(20, 10), sticky="nsew")
 
-getFile = imf.Button(uploadFrame, text="upload file", command=imf.func.fileUpload)
+getFile = imf.ttk.Button(uploadFrame, text="upload file", command=imf.func.fileUpload)
 getFile.pack()
+fileExtension = imf.Label(uploadFrame, text="files extensions allowed is [csv, json]").pack()
+
+dataFrame = imf.ttk.LabelFrame(frame, text="excel Column", padding=(20, 10))
+dataFrame.grid(row=2, column=0, padx=(20, 10), pady=(20, 10), sticky="nsew")
+
+
+
+
 root.mainloop()
