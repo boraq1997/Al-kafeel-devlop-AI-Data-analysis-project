@@ -1,15 +1,18 @@
 import importsFile as imf
 
+fileChoicedPath = ""
+
+def callSettingsFunction():
+    imf.func.settingsButton(root)
 
 # get json file
 settingsFile = open("files/settings/settings.json")
 settings = imf.json.load(settingsFile)
 
 theme = 'dark' if settings['SETTINGS']['THEME'] == "" else settings['SETTINGS']['THEME']
-
 root = imf.Tk()
 root.title("data analysis")
-root.geometry("1800x900")
+root.geometry("1000x700")
 root.option_add("*tearOff", False)
 
 style = imf.ttk.Style(root)
@@ -50,9 +53,9 @@ sideBarExitIco = imf.ImageTk.PhotoImage(sideBarExitIco)
 
 sideBarHomeBtn = imf.ttkbootstrap.Button(sideBar, text="HOME", image=sideBarHomeIco, compound=imf.LEFT).pack(fill="x", pady=5)
 sideBarAboutusBtn = imf.ttkbootstrap.Button(sideBar, text="ABOUT US", image=sideBarAboutusIco, compound=imf.LEFT).pack(fill="x", pady=5)
-sideBarSettingsBtn = imf.ttkbootstrap.Button(sideBar, text="SETTINGS", image=sideBarSettingsIco, compound=imf.LEFT).pack(fill="x", pady=5)
-sideBarAppInfoBtn = imf.ttkbootstrap.Button(sideBar, text="APPLICATION INFO", image=sideBarAppInfoIco, compound=imf.LEFT).pack(fill="x", pady=5)
-sideBarExitBtn = imf.ttkbootstrap.Button(sideBar, text="EXIT", image=sideBarExitIco, compound=imf.LEFT).pack(fill="x", pady=5, side="bottom")
+sideBarSettingsBtn = imf.ttkbootstrap.Button(sideBar, text="SETTINGS", image=sideBarSettingsIco, compound=imf.LEFT, command=callSettingsFunction).pack(fill="x", pady=5)
+sideBarAppInfoBtn = imf.ttkbootstrap.Button(sideBar, text="APPLICATION INFO", image=sideBarAppInfoIco, compound=imf.LEFT, command=imf.func.applicationInfoButton).pack(fill="x", pady=5)
+sideBarExitBtn = imf.ttkbootstrap.Button(sideBar, text="EXIT", image=sideBarExitIco, compound=imf.LEFT, command=imf.func.exitButton).pack(fill="x", pady=5, side="bottom")
 
 #===[MAIN SECTION]==
 mainSection = imf.Frame(root, background="blue")
@@ -64,12 +67,12 @@ heaerImageTk = imf.ImageTk.PhotoImage(headerImage)
 headerImageLabel = imf.Label(mainHeader, image=heaerImageTk, background="white")
 
 headerLabelText = "Welcome back to this program. \n You can do some logical analyzes related to your company or work by uploading files related to your work, \n so that some analyzes can be done. For more information, go to the application overview page."
-headerLabel = imf.ttkbootstrap.Label(mainHeader, text=headerLabelText, font=("arial", 15), foreground="black")
+headerLabel = imf.ttkbootstrap.Label(mainHeader, text=headerLabelText, font=("arial", 12), foreground="black")
 
 bodyBtnImage = imf.Image.open("files/images/uploade.png").resize((30, 30))
 bodyBtnImageTk = imf.ImageTk.PhotoImage(bodyBtnImage)
 
-bodyChoiceButton = imf.ttkbootstrap.Button(mainBody, text=f"Choice File", image=bodyBtnImageTk, compound=imf.LEFT)
+bodyChoiceButton = imf.ttkbootstrap.Button(mainBody, text=f"Choice File", image=bodyBtnImageTk, compound=imf.LEFT, command=imf.func.choiceFile)
 bodyExtensionsAllowedLabel = imf.ttkbootstrap.Label(mainBody, text="files extensions allowed is (csv, json)", foreground="red")
 # #GRIDS
 mainSection.columnconfigure(0, weight=1)

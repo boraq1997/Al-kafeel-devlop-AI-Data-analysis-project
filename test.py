@@ -1,21 +1,38 @@
-import tkinter as tk
-from tkinter import PhotoImage
+import importsFile as imf
 
-# Create the main tkinter window
-root = tk.Tk()
-root.title("Button with Image Example")
+df = imf.pd.read_csv("C:/Users/archive-first/Desktop/superstore_data.csv")
+# print(len(df['Year_Birth'].value_counts()))
+# print(df.isnull().sum())
+# print(df['Year_Birth'].sum())
+# print(df['Year_Birth'].dtypes)
 
-# Load the image file
-image_file = "files/images/a.png"
-img = PhotoImage(file=image_file)
+columnData = {'names': [], 'types': [], 'emptyColumns': [], 'redundantData': []}
+for column in df.columns:
+    columnData['names'].append(column)
+    columnData['types'].append(df[column].dtypes)
+    columnData['emptyColumns'].append(df[column].isnull().sum())
+    columnData['redundantData'].append(len(df[column].value_counts()))
 
-# Define a function to be called when the button is clicked
-def button_click():
-    print("Button clicked!")
 
-# Create a button with text and image
-button = tk.Button(root, text="Click Me", image=img, compound=tk.LEFT, command=button_click)
-button.pack(padx=10, pady=10)  # Adjust padding as needed
+root = imf.Tk()
+root.geometry("800x700")
 
-# Run the tkinter main loop
+
+table = imf.ttkbootstrap.Treeview(root, columns=("names", "types", "empty", "rend"), bootstyle='info', show='headings')
+table.heading("names", text="names")
+table.heading("types", text="types")
+table.heading("empty", text="empty")
+table.heading("rend", text="rend")
+table.pack()
+
+data = []
+for col in columnData:
+    for name in columnData[col]:
+        data = (name)
+        print(type(data))
+        
+data = (("boraq", "ali"), "man", "null", False).insert(parent='', index=0, values=data)
+data = ("ali", "man", "null", False).insert(parent='', index=0, values=data)
+# table.insert(parent='', index=0, values=data)
+
 root.mainloop()
