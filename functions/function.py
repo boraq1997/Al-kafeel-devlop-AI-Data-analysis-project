@@ -39,10 +39,17 @@ def showDataFrameTable():
     dataFrameTable.title("DATA FRAME")
     dataFrameTable.geometry("900x700")
 
+    dataFrameTable.rowconfigure(0, weight=3)
+    dataFrameTable.rowconfigure(1, weight=1)
+
+    dataFrameTable.columnconfigure(0, weight=1)
+    dataFrameTable.columnconfigure(1, weight=1)
+    dataFrameTable.columnconfigure(2, weight=1)
+
+    tableFrame = imf.Frame(dataFrameTable)
+    tableFrame.grid(row=0, column=0, sticky="news", columnspan=3)
+
     dataFrame = imf.af.CSVFileReading(fileChoicedPath)
-
-
-
 
     columnData = {'names': [], 'types': [], 'emptyColumns': [], 'redundantData': []}
     for column in dataFrame.columns:
@@ -51,15 +58,8 @@ def showDataFrameTable():
      columnData['emptyColumns'].append(dataFrame[column].isnull().sum())
      columnData['redundantData'].append(len(dataFrame[column].value_counts()))
 
-
-
-#     columnData = []
-#     for column in dataFrame.columns:
-#         columnData.append(column)
-
-      
     table = imf.ttkbootstrap.Treeview(
-        dataFrameTable,
+        tableFrame,
         bootstyle='info',
         show='headings',
         columns=('Name', 'Type', 'emptyColumns', 'redundantData')
@@ -68,13 +68,24 @@ def showDataFrameTable():
     table.heading('Type', text="Type")
     table.heading('emptyColumns', text="emptyColumns")
     table.heading('redundantData', text="redundantData")
-    table.pack(fill="both")
+    table.pack(side="top", fill="both", expand=True)
 
-    for names in dataFrame['names']:
-        data = (col['names'])
+    for i in range(len(columnData['names'])):
+        table.insert("", "end", values=(
+            columnData['names'][i],
+            columnData['types'][i],
+            columnData['emptyColumns'][i],
+            columnData['redundantData'][i]
+        ))
 
-    table.insert(parent='', index=0, values=data)
-#     print(columnData)
+    fileInfoFrame = imf.Frame(dataFrameTable, background="red")
+    fileInfoFrame.grid(row=1, column=0, sticky="news", columnspan=3)
 
-
-# rows['Name', 'type', 'empty_rows',...]
+    #=={FILE INFO}
+    fileName = ""
+    filePath = ""
+    columnsCount = ""
+    rowCount = ""
+    emptyRows = ""
+    emptyColumns = ""
+    
