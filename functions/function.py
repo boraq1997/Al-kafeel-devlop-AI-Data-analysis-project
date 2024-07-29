@@ -35,19 +35,32 @@ def settingsButton(root):
     settingsWindow.geometry("500x400")
 
 def showDataFrameTable():
-    dataFrameTable = imf.Tk()
+    dataFrameTable = imf.Toplevel()
     dataFrameTable.title("DATA FRAME")
     dataFrameTable.geometry("900x700")
 
-    dataFrameTable.rowconfigure(0, weight=3)
-    dataFrameTable.rowconfigure(1, weight=1)
+    dataFrameTable.rowconfigure(0, weight=2)
+    dataFrameTable.rowconfigure(1, weight=2)
+    # dataFrameTable.rowconfigure(2, weight=1)
 
     dataFrameTable.columnconfigure(0, weight=1)
     dataFrameTable.columnconfigure(1, weight=1)
     dataFrameTable.columnconfigure(2, weight=1)
 
-    tableFrame = imf.Frame(dataFrameTable)
-    tableFrame.grid(row=0, column=0, sticky="news", columnspan=3)
+    #===[BUTTONS]==
+    buttonsFrame = imf.ttkbootstrap.Frame(dataFrameTable)
+    buttonsFrame.grid(row=0, column=0, sticky="news", columnspan=3)
+
+    buttonsFrame.columnconfigure(0, weight=1)
+    buttonsFrame.columnconfigure(1, weight=1)
+    buttonsFrame.columnconfigure(2, weight=1)
+
+    startAnalysis = imf.ctk.CTkButton(buttonsFrame, text="Start Analysis", command=dataAnalysisButton)
+    startAnalysis.grid(row=0, column=1)
+
+    #===[DATA FRAME TABLE]==
+    tableFrame = imf.Frame(dataFrameTable, background="red")
+    tableFrame.grid(row=1, column=0, sticky="news", columnspan=3)
 
     dataFrame = imf.af.CSVFileReading(fileChoicedPath)
 
@@ -69,6 +82,7 @@ def showDataFrameTable():
     table.heading('emptyColumns', text="emptyColumns")
     table.heading('redundantData', text="redundantData")
     table.pack(side="top", fill="both", expand=True)
+    # table.grid(row=0, column=0, columnspan=3, sticky="news")
 
     for i in range(len(columnData['names'])):
         table.insert("", "end", values=(
@@ -78,14 +92,35 @@ def showDataFrameTable():
             columnData['redundantData'][i]
         ))
 
-    fileInfoFrame = imf.Frame(dataFrameTable, background="red")
-    fileInfoFrame.grid(row=1, column=0, sticky="news", columnspan=3)
+    fileInfoFrame = imf.Frame(dataFrameTable)
+    fileInfoFrame.grid(row=2, column=0, sticky="news", columnspan=3)
+
+    fileInfoFrame.rowconfigure(0, weight=3)
+    fileInfoFrame.rowconfigure(1, weight=1)
+
+    fileInfoFrame.columnconfigure(0, weight=5)
+    fileInfoFrame.columnconfigure(1, weight=2)
 
     #=={FILE INFO}
-    fileName = ""
-    filePath = ""
-    columnsCount = ""
-    rowCount = ""
+    fileName = imf.os.path.basename(fileChoicedPath)
+    filePath = fileChoicedPath
+    columnsCount = format(dataFrame.shape[1])
+    rowCount = format(dataFrame.shape[0])
     emptyRows = ""
     emptyColumns = ""
-    
+
+    fileInfoTable = imf.ttkbootstrap.Treeview(fileInfoFrame, show="headings", bootstyle="info", columns=('name', 'value'))
+    fileInfoTable.heading("name", text="Name")
+    fileInfoTable.heading("value", text="Value")
+    # fileInfoFrame.pack(side="left", fill="both", expand=True)
+    fileInfoTable.grid(row=1, column=0, columnspan=2, rowspan=1, sticky="news", pady=30)
+
+    fileInfoTable.column("name", width=30)
+
+    fileInfoTable.insert("", "end", values=("FIle Path", filePath))
+    fileInfoTable.insert("", "end", values=("fileName", fileName))
+    fileInfoTable.insert("", "end", values=("Columns Count", columnsCount))
+    fileInfoTable.insert("", "end", values=("Rows Count", rowCount))
+
+def dataAnalysisButton():
+    imf.af.dataAnalysisPage()
