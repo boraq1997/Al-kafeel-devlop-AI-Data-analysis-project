@@ -13,7 +13,6 @@ def choiceFile():
      global fileChoicedPath
      fileChoicedPath = browseFile()
      if fileChoicedPath:
-        print(fileChoicedPath)
         showDataFrameTable()
         
      
@@ -48,7 +47,7 @@ def showDataFrameTable():
     dataFrameTable.columnconfigure(2, weight=1)
 
     #===[BUTTONS]==
-    buttonsFrame = imf.ttkbootstrap.Frame(dataFrameTable)
+    buttonsFrame = imf.ctk.CTkFrame(dataFrameTable)
     buttonsFrame.grid(row=0, column=0, sticky="news", columnspan=3)
 
     buttonsFrame.columnconfigure(0, weight=1)
@@ -59,7 +58,7 @@ def showDataFrameTable():
     startAnalysis.grid(row=0, column=1)
 
     #===[DATA FRAME TABLE]==
-    tableFrame = imf.Frame(dataFrameTable, background="red")
+    tableFrame = imf.ctk.CTkFrame(dataFrameTable, background="red")
     tableFrame.grid(row=1, column=0, sticky="news", columnspan=3)
 
     dataFrame = imf.af.CSVFileReading(fileChoicedPath)
@@ -71,9 +70,8 @@ def showDataFrameTable():
      columnData['emptyColumns'].append(dataFrame[column].isnull().sum())
      columnData['redundantData'].append(len(dataFrame[column].value_counts()))
 
-    table = imf.ttkbootstrap.Treeview(
+    table = imf.ttk.Treeview(
         tableFrame,
-        bootstyle='info',
         show='headings',
         columns=('Name', 'Type', 'emptyColumns', 'redundantData')
         )
@@ -124,3 +122,6 @@ def showDataFrameTable():
 
 def dataAnalysisButton():
     imf.af.dataAnalysisPage()
+
+def dataFrameReturn():
+    return fileChoicedPath

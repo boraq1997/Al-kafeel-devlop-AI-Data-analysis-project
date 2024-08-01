@@ -15,3 +15,5 @@ import layout.pageSettings as pgs
 from tkinter import PhotoImage
 import customtkinter as ctk
 from tkinter import messagebox
+import seaborn as sns
+from CTkTable import *
